@@ -215,6 +215,22 @@ const Student = mongoose.model("Student", studentSchema);
 
 
 // create document
+async function createStudents() {
+  const existingStudents = await Student.countDocuments({
+    name: { $in: ["Ali", "Sara"] }
+  });
+
+  if (existingStudents > 0) {
+    console.log("Students already exist");
+    return;
+  }
+
+  await Student.insertMany([
+    { name: "Ali", age: 21, major: "CS" },
+    { name: "Sara", age: 23, major: "SE" }
+  ]);
+  console.log("Inserted students");
+}
 
 
 // read document
