@@ -234,6 +234,10 @@ async function createStudents() {
 
 
 // read document
+async function readStudents() {
+  const all = await Student.find();
+  console.log("All students:", all);
+}
 
 
 // update document
