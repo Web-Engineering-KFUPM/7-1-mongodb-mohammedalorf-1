@@ -241,6 +241,10 @@ async function readStudents() {
 
 
 // update document
+async function updateStudent() {
+  await Student.updateOne({ name: "Ali" }, { age: 22 });
+  console.log("Updated Ali");
+}
 
 
 // delete document
