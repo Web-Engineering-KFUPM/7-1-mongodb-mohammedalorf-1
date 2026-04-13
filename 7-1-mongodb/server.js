@@ -186,13 +186,27 @@
 
 import mongoose from "mongoose";
 
-const connectionString = "mongodb+srv://yourusername:yourpassword@cluster0.rygtjue.mongodb.net/labDB";
-mongoose.connect(connectionString)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.error("Connection error:", err));
+const connectionString =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://yourusername:yourpassword@cluster0.rygtjue.mongodb.net/labDB";
+
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(connectionString);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Connection error:", error.message);
+    process.exit(1);
+  }
+}
 
 
-// define schema
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  major: String
+});
+const Student = mongoose.model("Student", studentSchema);
 
 
 // create document
@@ -205,3 +219,5 @@ mongoose.connect(connectionString)
 
 
 // delete document
+
+connectToDatabase();
