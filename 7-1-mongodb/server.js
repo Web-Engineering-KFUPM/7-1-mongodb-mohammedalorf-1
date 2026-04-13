@@ -191,12 +191,18 @@ const connectionString =
   "mongodb+srv://yourusername:yourpassword@cluster0.rygtjue.mongodb.net/labDB";
 
 async function connectToDatabase() {
+  if (connectionString.includes("yourusername") || connectionString.includes("yourpassword")) {
+    console.error("Update the MongoDB connection string with your Atlas username and password.");
+    return false;
+  }
+
   try {
     await mongoose.connect(connectionString);
     console.log("Connected to MongoDB");
+    return true;
   } catch (error) {
     console.error("Connection error:", error.message);
-    process.exit(1);
+    return false;
   }
 }
 
@@ -248,5 +254,27 @@ async function updateStudent() {
 
 
 // delete document
+async function deleteStudent() {
+  await Student.deleteOne({ name: "Sara" });
+  console.log("Deleted Sara");
+}
 
-connectToDatabase();
+async function runLab() {
+  const isConnected = await connectToDatabase();
+
+  if (!isConnected) {
+    return;
+  }
+
+  try {
+    await createStudents();
+    await readStudents();
+    await updateStudent();
+    await deleteStudent();
+  } finally {
+    await mongoose.disconnect();
+    console.log("Disconnected from MongoDB");
+  }
+}
+
+runLab();
