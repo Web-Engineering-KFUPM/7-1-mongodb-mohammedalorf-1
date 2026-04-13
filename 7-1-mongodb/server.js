@@ -184,9 +184,12 @@
  *  This is the default behavior of Mongoose.
  */
 
-// import mongoose
+import mongoose from "mongoose";
 
-// establish connection
+const connectionString = "mongodb+srv://yourusername:yourpassword@cluster0.rygtjue.mongodb.net/labDB";
+mongoose.connect(connectionString)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("Connection error:", err));
 
 
 // define schema
